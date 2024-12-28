@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen w-screen h-full bg-polar-night-300 text-snow-storm-300">
+  <div class="min-h-screen w-screen h-full bg-polar-night-300 text-snow-storm-100">
     <div class="fixed top-4 left-4" :class="[showHomeButton ? 'block' : 'hidden']">
       <NuxtLink href="/">
         <div class="flex items-center"> 
