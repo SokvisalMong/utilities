@@ -3,6 +3,11 @@ export default defineNuxtConfig({
   app: {
     head: {
       link: [
+        {
+          rel: 'preload',
+          as: 'style',
+          href: 'https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css'
+        },
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}
       ]
     }
