@@ -18,8 +18,7 @@
         <div class="flex items-center justify-between gap-4">
           <span>Default PX to REM</span>
           <input
-            type="text"
-            
+            type="number"
             :value="defaultPxToRem"
             @input="updateDefaultPxToRem"
             class="w-20 px-2 py-1 bg-polar-night-200 rounded border border-frost-100 !outline-none"

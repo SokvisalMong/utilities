@@ -18,7 +18,7 @@ import type { RemConverterConfig } from '~/types/remConverterConfig';
 
 const config = ref<RemConverterConfig>({
   defaultPxToRem: 16,
-  autoCopyToClipboard: false
+  autoCopyToClipboard: true
 });
 
 watch(config, (newConfig) => {
