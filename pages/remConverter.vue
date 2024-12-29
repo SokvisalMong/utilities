@@ -17,7 +17,7 @@
               inputmode="numeric" 
               :value="formattedPx"
               @input="updateFromPx(Number(($event.target as HTMLInputElement).value))"
-              class="w-32 px-2 py-1 bg-polar-night-200 focus:bg-polar-night-300 rounded border border-r-0 rounded-r-none border-frost-100 !outline-none [-moz-appearance:textfield]"
+              class="w-32 px-2 py-1 bg-polar-night-200 focus:bg-polar-night-300 rounded border border-r-0 rounded-r-none border-frost-100 !outline-none"
             />
             <button 
               @click="copyToClipboard(formattedPx)"
@@ -35,7 +35,7 @@
               inputmode="numeric"
               :value="formattedRem"
               @input="updateFromRem(Number(($event.target as HTMLInputElement).value))"
-              class="w-32 px-2 py-1 bg-polar-night-200 focus:bg-polar-night-300 rounded border border-r-0 rounded-r-none border-frost-100 !outline-none [-moz-appearance:textfield]"
+              class="w-32 px-2 py-1 bg-polar-night-200 focus:bg-polar-night-300 rounded border border-r-0 rounded-r-none border-frost-100 !outline-none"
             />
             <button 
               @click="copyToClipboard(formattedRem)"
@@ -51,90 +51,73 @@
 </template>
 
 <script setup lang="ts">
+import type { RemConverterConfig } from '~/types/remConverterConfig'
+import { useLocalStorage } from '~/composables/useLocalStorage'
+
 useHead({
   title: 'Rem Converter'
 })
 
-import type { RemConverterConfig } from '~/types/remConverterConfig';
-
-const config = ref<RemConverterConfig>({
+const defaultConfig: RemConverterConfig = {
   defaultPxToRem: 16,
   autoCopyToClipboard: true
-});
+}
 
-const px = ref<number>(config.value.defaultPxToRem);
-const rem = ref<number>(1);
+const { data: config } = useLocalStorage<RemConverterConfig>('remConverterConfig', defaultConfig)
 
-const formattedPx = computed(() => Number(px.value.toFixed(2)));
-const formattedRem = computed(() => Number(rem.value.toFixed(2)));
+const px = ref<number>(config.value.defaultPxToRem)
+const rem = ref<number>(1)
 
-const copyTimeout = ref<NodeJS.Timeout>();
+const formattedPx = computed(() => Number(px.value.toFixed(2)))
+const formattedRem = computed(() => Number(rem.value.toFixed(2)))
+
+const copyTimeout = ref<NodeJS.Timeout>()
 
 const updateFromPx = (value: number) => {
   if (copyTimeout.value) {
-    clearTimeout(copyTimeout.value);
+    clearTimeout(copyTimeout.value)
   }
   
-  px.value = value;
-  rem.value = value / config.value.defaultPxToRem;
+  px.value = value
+  rem.value = value / config.value.defaultPxToRem
 
   if (config.value.autoCopyToClipboard) {
     copyTimeout.value = setTimeout(() => {
-      copyToClipboard(formattedRem.value);
-    }, 100);
+      copyToClipboard(formattedRem.value)
+    }, 100)
   }
-};
+}
 
 const updateFromRem = (value: number) => {
   if (copyTimeout.value) {
-    clearTimeout(copyTimeout.value);
+    clearTimeout(copyTimeout.value)
   }
   
-  rem.value = value;
-  px.value = value * config.value.defaultPxToRem;
+  rem.value = value
+  px.value = value * config.value.defaultPxToRem
 
   if (config.value.autoCopyToClipboard) {
     copyTimeout.value = setTimeout(() => {
-      copyToClipboard(formattedPx.value);
-    }, 100);
+      copyToClipboard(formattedPx.value)
+    }, 100)
   }
-};
+}
 
 const copyToClipboard = async (value: number) => {
   try {
-    await navigator.clipboard.writeText(value.toString());
+    await navigator.clipboard.writeText(value.toString())
   } catch (error) {
-    console.error('Failed to copy:', error);
+    console.error('Failed to copy:', error)
   }
-};
+}
 
-watch(() => config.value.defaultPxToRem, (newPxToRem) => {
-  updateFromPx(px.value);
-}, { immediate: true });
-
-watch(config, (newConfig) => {
-  try {
-    localStorage.setItem('remConverterConfig', JSON.stringify(newConfig));
-  } catch (error) {
-    console.error('Failed to save config:', error);
-  }
-}, { deep: true });
-
-onMounted(() => {
-  try {
-    const savedConfig = localStorage.getItem('remConverterConfig');
-    if (savedConfig) {
-      config.value = JSON.parse(savedConfig);
-      updateFromPx(config.value.defaultPxToRem);
-    }
-  } catch (error) {
-    console.error('Failed to load config:', error);
-  }
-});
+watch(() => config.value.defaultPxToRem, () => {
+  updateFromPx(px.value)
+}, { immediate: true })
 
 onUnmounted(() => {
   if (copyTimeout.value) {
-    clearTimeout(copyTimeout.value);
+    clearTimeout(copyTimeout.value)
   }
-});
+})
 </script>
