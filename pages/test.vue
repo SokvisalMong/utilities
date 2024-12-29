@@ -17,11 +17,11 @@ const defaultToast = () => {
 }
 
 const successToast = () => {
-  addToast('Success', 'This is the success toast', 'default')
+  addToast('Success', 'This is the success toast', 'success')
 }
 
 const failedToast = () => {
-  addToast('Failed', 'This is the failed toast', 'default')
+  addToast('Failed', 'This is the failed toast', 'failed')
 }
 
 const warningToast = () => {
