@@ -21,7 +21,14 @@
 
 <script setup lang="ts">
 useHead({
-  title: 'Utilities'
+  title: "Utilities",
+  meta: [
+    { name: 'description', content: "A collection of tools I find useful to deal with annoying problems." },
+    { name: 'keywords', content: 'web development tools, utilities, pixel converter, rem converter, web tools' }
+  ],
+  link: [
+    { rel: 'canonical', href: 'https://utilitiesvizzy.vercel.app' }
+  ]
 })
 
 const pages = [

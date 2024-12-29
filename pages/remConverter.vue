@@ -56,7 +56,14 @@ import { useLocalStorage } from '~/composables/useLocalStorage'
 const { addToast } = useToast()
 
 useHead({
-  title: 'Rem Converter'
+  title: 'Rem Converter',
+  meta: [
+    { name: 'description', content: 'Convert Px to Rem or Rem to Px with configurable Px to Rem conversion and quick copy to clipboard.' },
+    { name: 'keywords', content: 'px to rem, rem converter, pixel to rem, css units converter, web development tools' }
+  ],
+  link: [
+    { rel: 'canonical', href: 'https://utilitiesvizzy.vercel.app/remConverter' }
+  ]
 })
 
 const defaultConfig: RemConverterConfig = {
