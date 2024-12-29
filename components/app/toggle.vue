@@ -43,8 +43,4 @@ const handleChange = (event: Event) => {
 .slider.checked:before {
   @apply translate-x-4;
 }
-
-input:focus + .slider {
-  @apply ring-2 ring-frost-400;
-}
 </style>

@@ -10,19 +10,22 @@
     >
       <div class="flex justify-between items-center mb-4">
         <span class="font-bold">Config</span>
-        <button @click="closeConfig">
+        <button @click="closeConfig" class="hover:text-snow-storm-300">
           <Icon name="mdi:close" size="20"/>
         </button>
       </div>
       <div class="space-y-4">
         <div class="flex items-center justify-between gap-4">
-          <span>Default PX to REM</span>
-          <input
+          <span>Base px. size</span>
+          <div class="space-x-1">
+            <input
             type="number"
             :value="defaultPxToRem"
             @input="updateDefaultPxToRem"
-            class="w-20 px-2 py-1 bg-polar-night-200 rounded border border-frost-100 !outline-none"
-          />
+            class="w-16 px-2 py-1 bg-polar-night-200 rounded border border-frost-100 !outline-none focus:bg-polar-night-300"
+            />
+            <button class="px-2 py-1 border-frost-100 border rounded bg-polar-night-200 hover:bg-polar-night-300 transition-all active:bg-polar-night-400" @click="resetPx">Reset</button>
+          </div>
         </div>
         <div class="flex items-center justify-between">
           <span>Automatically copy to clipboard</span>
@@ -78,6 +81,10 @@ const handleClickOutside = (event: MouseEvent) => {
     closeConfig();
   }
 };
+
+const resetPx = () => {
+  emit('update:defaultPxToRem', 16);
+}
 
 onMounted(() => {
   document.addEventListener('click', handleClickOutside);

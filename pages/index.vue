@@ -20,6 +20,10 @@
 </template>
 
 <script setup lang="ts">
+useHead({
+  title: 'Utilities'
+})
+
 const pages = [
   {
     label: "Rem Converter",
