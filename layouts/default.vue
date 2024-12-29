@@ -9,10 +9,13 @@
       </NuxtLink>
     </div>
     <NuxtPage/>
+    <AppToast/>
+    <Analytics/>
   </div>
 </template>
 
 <script setup lang="ts">
+import { Analytics } from '@vercel/analytics/nuxt'
 const route = useRoute();
 
 const showHomeButton = computed(() => route.path !== '/')
