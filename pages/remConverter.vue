@@ -53,6 +53,7 @@
 <script setup lang="ts">
 import type { RemConverterConfig } from '~/types/remConverterConfig'
 import { useLocalStorage } from '~/composables/useLocalStorage'
+const { addToast } = useToast()
 
 useHead({
   title: 'Rem Converter'
@@ -67,6 +68,7 @@ const { data: config } = useLocalStorage<RemConverterConfig>('remConverterConfig
 
 const px = ref<number>(config.value.defaultPxToRem)
 const rem = ref<number>(1)
+const isUserInteraction = ref(false)
 
 const formattedPx = computed(() => Number(px.value.toFixed(2)))
 const formattedRem = computed(() => Number(rem.value.toFixed(2)))
@@ -74,6 +76,7 @@ const formattedRem = computed(() => Number(rem.value.toFixed(2)))
 const copyTimeout = ref<NodeJS.Timeout>()
 
 const updateFromPx = (value: number) => {
+  isUserInteraction.value = true
   if (copyTimeout.value) {
     clearTimeout(copyTimeout.value)
   }
@@ -81,7 +84,7 @@ const updateFromPx = (value: number) => {
   px.value = value
   rem.value = value / config.value.defaultPxToRem
 
-  if (config.value.autoCopyToClipboard) {
+  if (config.value.autoCopyToClipboard && isUserInteraction.value) {
     copyTimeout.value = setTimeout(() => {
       copyToClipboard(formattedRem.value)
     }, 100)
@@ -89,6 +92,7 @@ const updateFromPx = (value: number) => {
 }
 
 const updateFromRem = (value: number) => {
+  isUserInteraction.value = true
   if (copyTimeout.value) {
     clearTimeout(copyTimeout.value)
   }
@@ -96,7 +100,7 @@ const updateFromRem = (value: number) => {
   rem.value = value
   px.value = value * config.value.defaultPxToRem
 
-  if (config.value.autoCopyToClipboard) {
+  if (config.value.autoCopyToClipboard && isUserInteraction.value) {
     copyTimeout.value = setTimeout(() => {
       copyToClipboard(formattedPx.value)
     }, 100)
@@ -106,18 +110,22 @@ const updateFromRem = (value: number) => {
 const copyToClipboard = async (value: number) => {
   try {
     await navigator.clipboard.writeText(value.toString())
+    addToast("Copied", "Copied to clipboard", "success")
   } catch (error) {
     console.error('Failed to copy:', error)
+    addToast("Error", "Failed to copy to clipboard", "failed")
   }
 }
 
 watch(() => config.value.defaultPxToRem, () => {
+  isUserInteraction.value = false
   updateFromPx(px.value)
-}, { immediate: true })
+})
 
 onUnmounted(() => {
   if (copyTimeout.value) {
     clearTimeout(copyTimeout.value)
   }
+  isUserInteraction.value = false
 })
 </script>
