@@ -10,12 +10,12 @@
     </div>
     <NuxtPage/>
     <AppToast/>
-    <Analytics/>
+    <SpeedInsights />
   </div>
 </template>
 
 <script setup lang="ts">
-import { Analytics } from '@vercel/analytics/nuxt'
+import { SpeedInsights } from '@vercel/speed-insights/vue';
 const route = useRoute();
 
 const showHomeButton = computed(() => route.path !== '/')
